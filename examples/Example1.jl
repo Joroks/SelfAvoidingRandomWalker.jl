@@ -1,8 +1,6 @@
-using Pkg
+import Pkg; Pkg.add(url="https://github.com/Joroks/SelfAvoidingRandomWalker.jl")
+
 using LinearAlgebra
-
-Pkg.add(url="https://github.com/Joroks/SelfAvoidingRandomWalker.jl")
-
 using SelfAvoidingRandomWalker
 
 ## model Parameters
@@ -16,16 +14,10 @@ minDistance = 0.9
 bondLength = 0.7
 targetAngle = (160, 160)
 
-## chain Creation
 numAtoms = 1_120_042
 averageLength = 1000
 dispersity = 2.4
 
-chainLengths = randomLengths(numAtoms, averageLength, dispersity)
-
-printChainLengthStatistics(chainLengths)
-
-## particle Creation
 particles = Particle[
     Particle([30, 0, 0], 15) # sphere
     Particle([100, 50, 10], diagm([30, 10, 10])) # ellipse
@@ -36,8 +28,13 @@ particles = Particle[
 
 maxNumTries = 50
 
-points = randomWalk(chainLengths, boxSize, bondLength, minDistance, targetAngle, particles, maxNumTries)
+## executing SARW algorithm - do not edit
+chainLengths = randomLengths(numAtoms, averageLength, dispersity)
+printChainLengthStatistics(chainLengths)
 
+points = randomWalk(chainLengths, boxSize, bondLength, minDistance, targetAngle, particles, maxNumTries)
 printAngleStatistics(points)
 
-saveAsLammps(boxSize, points, "output/test.data", "#")
+if !isempty(ARGS)
+    saveAsLammps(boxSize, points, "output/test.data", "#")
+end
