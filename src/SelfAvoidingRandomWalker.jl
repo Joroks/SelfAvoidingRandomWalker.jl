@@ -24,4 +24,4 @@ export Particle
 export printChainLengthStatistics
 export printAngleStatistics
 
-end # module SARW
+end # module SelfAvoidingRandomWalker
