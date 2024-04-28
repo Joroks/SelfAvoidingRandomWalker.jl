@@ -1,0 +1,13 @@
+name = "SelfAvoidingRandomWalker"
+uuid = "a42a5f7b-f114-4f2d-b06a-fb70c26e4e43"
+authors = ["Johannes Roksvaag"]
+version = "1.0.0-DEV"
+
+[compat]
+julia = "1.6.7"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
