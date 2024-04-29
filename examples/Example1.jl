@@ -1,5 +1,3 @@
-import Pkg; Pkg.add(url="https://github.com/Joroks/SelfAvoidingRandomWalker.jl")
-
 using LinearAlgebra
 using SelfAvoidingRandomWalker
 
