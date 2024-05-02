@@ -68,7 +68,7 @@ function gridVectors(a, n)
     for part in 1:npart
         partIndices = (1:partlength) .+ partlength*(part-1)
 
-        currBlock[1:(n-1), partIndices] = gridVectors(a, n-1)
+        currBlock[1:(n-1), partIndices] = prevBlock
         currBlock[n, partIndices] .= a[part]
     end
 
