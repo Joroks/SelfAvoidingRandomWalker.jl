@@ -6,6 +6,7 @@ using ProgressMeter
 using Distributions
 using UnicodePlots
 using Printf
+using Pipe: @pipe
 
 const Vector3 = SVector{3, Float64}
 const Matrix3x3 = SMatrix{3, 3, Float64}

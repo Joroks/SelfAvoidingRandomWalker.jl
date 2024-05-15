@@ -25,9 +25,9 @@ function hasNeighbours(grid::CellGrid, point, ignore = x -> false)
 
     isInRadius(p) = periodicDistance(p, point, grid.boxSize) <= grid.searchRadius    
 
-    Iterators.map(o -> floorMod(index + o, grid.numCells), grid.overlapMask) |>
-        indices -> Iterators.flatmap(i -> get(grid.cells, i, emptyVecArray), indices) |>
-        points -> Iterators.map(p -> isInRadius(p) && !ignore(p) , points) |>
+    @pipe Iterators.map(o -> floorMod(index + o, grid.numCells), grid.overlapMask) |>
+        Iterators.flatmap(i -> get(grid.cells, i, emptyVecArray), _) |>
+        Iterators.map(p -> isInRadius(p) && !ignore(p) , _) |>
         any
 end
 
