@@ -76,7 +76,7 @@ function saveAsLammps(boxSize, chains, filePath, headerTitle)
         println(file, "Masses\n")
         println(file, "1 1.00000000\n")
 
-        println(file, "Atoms\n")
+        println(file, "Atoms # molecular\n")
 
         for (atomID, (moleculeID, position)) in enumerate(atoms)
             mainImage = floorMod(position, boxSize)
