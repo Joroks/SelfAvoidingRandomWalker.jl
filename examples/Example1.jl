@@ -33,6 +33,4 @@ printChainLengthStatistics(chainLengths)
 points = randomWalk(chainLengths, boxSize, bondLength, minDistance, targetAngle, particles, maxNumTries)
 printAngleStatistics(points)
 
-if !isempty(ARGS)
-    saveAsLammps(boxSize, points, "output/test.data", "#")
-end
+saveAsLammps(boxSize, points, "output/test.data", "#")
