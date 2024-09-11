@@ -30,7 +30,10 @@ maxNumTries = 50
 chainLengths = randomLengths(numAtoms, averageLength, dispersity)
 printChainLengthStatistics(chainLengths)
 
-points = randomWalk(chainLengths, boxSize, bondLength, minDistance, targetAngle, particles, maxNumTries)
+points = randomWalk(chainLengths, boxSize, bondLength, minDistance;
+    targetAngle,
+    particles,
+    maxNumTries)
 printAngleStatistics(points)
 
 saveAsLammps(boxSize, points, "output/test.data", "#")

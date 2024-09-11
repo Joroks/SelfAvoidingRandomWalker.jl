@@ -18,26 +18,35 @@ function CellGrid(boxSize, searchRadius)
     return CellGrid(boxSize, cellSize, numCells, searchRadius, overlapMask, cells)
 end
 
-const emptyVecArray = Vector3[]
-
 function hasNeighbours(grid::CellGrid, point, ignore = x -> false)
     index = cellIndex(point, grid.cellSize)
 
     isInRadius(p) = periodicDistance(p, point, grid.boxSize) <= grid.searchRadius    
 
-    @pipe Iterators.map(o -> floorMod(index + o, grid.numCells), grid.overlapMask) |>
-        Iterators.flatmap(i -> get(grid.cells, i, emptyVecArray), _) |>
-        Iterators.map(p -> isInRadius(p) && !ignore(p) , _) |>
-        any
+    for overlap in grid.overlapMask
+        i = floorMod(index + overlap, grid.numCells)
+        cell = get(grid.cells, i, nothing)
+        isnothing(cell) && continue
+
+        for p in cell
+            isInRadius(p) && !ignore(p) && return true
+        end
+    end
+
+    return false
 end
 
 function add!(grid::CellGrid, point::Vector3)
     index = cellIndex(point, grid.cellSize)
     indexMod = floorMod(index, grid.numCells)
 
-    cell = get!(grid.cells, indexMod, Vector3[])
-
-    push!(cell, point)
+    if haskey(grid.cells, indexMod)
+        push!(grid.cells[indexMod], point)
+    else
+        cell = sizehint!(Vector3[], 5)
+        push!(cell, point)
+        grid.cells[indexMod] = cell
+    end
 
     return grid
 end
@@ -45,7 +54,7 @@ end
 function remove!(grid::CellGrid, point)
     index = floorMod(cellIndex(point, grid.cellSize), grid.numCells)
 
-    cell = get(grid.cells, index, emptyVecArray)
+    cell = grid.cells[index]
 
     firstOccurance = findfirst(p -> p==point, cell)
     deleteat!(cell, firstOccurance)

@@ -26,7 +26,7 @@ for more information see: https://docs.lammps.org/Howto_triclinic.html
 Note that any box size can be transformed into the valid structure using lattice reduction and QR-decomposition while retaining eqivalent periodicity (although prossibly rotated).
 
 """
-function saveAsLammps(boxSize, chains, filePath, headerTitle)
+function saveAsLammps(boxSize, chains, filePath, headerTitle; kwargs...)
     atoms = Tuple{Int64, SVector{3, Float64}}[]
     bonds = Tuple{Int64, Int64}[]
     angles = Tuple{Int64, Int64, Int64}[]
@@ -50,7 +50,7 @@ function saveAsLammps(boxSize, chains, filePath, headerTitle)
     open(filePath, "w") do file
         desc = "Writing to LAMMPS file:"
         barlen = ProgressMeter.tty_width(desc, stderr, true) - 1 # workaround for incorrect length calculation
-        p = Progress(length(atoms) + length(bonds)+ length(angles), desc, barlen=barlen)
+        p = Progress(length(atoms) + length(bonds)+ length(angles), desc; barlen, kwargs...)
 
         println(file, headerTitle)
         println(file)

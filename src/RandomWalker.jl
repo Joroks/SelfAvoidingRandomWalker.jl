@@ -12,7 +12,12 @@ Run the self-avoiding random walk algorithm in a periodic simulation box.
 - `particles`: a list of particles that will be avoided by the random walker
 - `maxNumTries`: specifies how often the algorithm tries to place any given bead before backtracking one step.
 """
-function randomWalk(chainLengths, boxSize, bondLength, minDistance, targetAngle=(0, 180), particles = Particle[], maxNumTries=50)
+function randomWalk(chainLengths, boxSize, bondLength, minDistance;
+        targetAngle=(0, 180),
+        particles = nothing,
+        maxNumTries=50,
+        kwargs...
+    )
     boxSize = Matrix3x3(boxSize)
 
     numAtoms = sum(chainLengths)
@@ -28,7 +33,7 @@ function randomWalk(chainLengths, boxSize, bondLength, minDistance, targetAngle=
 
     desc = "Running random walker:"
     barlen = ProgressMeter.tty_width(desc, stderr, true) - 1 # workaround for incorrect length calculation
-    p = Progress(numAtoms, desc, showspeed=true, barlen=barlen)
+    p = Progress(numAtoms, desc; showspeed=true, barlen, kwargs...)
 
     numPlaced = 0
     highestNumPlaced = 0
@@ -40,7 +45,6 @@ function randomWalk(chainLengths, boxSize, bondLength, minDistance, targetAngle=
         tries = sizehint!(Int64[], targetLength)
 
         while length(points) < targetLength
-
             while !isempty(points) && tries[end] >= maxNumTries
                 remove!(cellGrid, points[end])
 
@@ -51,7 +55,7 @@ function randomWalk(chainLengths, boxSize, bondLength, minDistance, targetAngle=
             end
 
             if isempty(points)
-                nextStep = boxSize*rand(3)
+                nextStep = boxSize*rand(Vector3)
                 nextDirection = initialRD(0)
             else
                 tryFactor = (tries[end] + rand()) / maxNumTries
@@ -63,7 +67,7 @@ function randomWalk(chainLengths, boxSize, bondLength, minDistance, targetAngle=
 
             ignore(n) = !isempty(points) && n == points[end]
 
-            if !hasNeighbours(cellGrid, nextStep, ignore) && !any(particles .|> p -> isInParticle(nextStep, boxSize, p))
+            if !hasNeighbours(cellGrid, nextStep, ignore) && (isnothing(particles) || all(p -> !isInParticle(nextStep, boxSize, p), particles))
                 add!(cellGrid, nextStep)
 
                 push!(points, nextStep)
