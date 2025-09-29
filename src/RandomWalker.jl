@@ -14,7 +14,7 @@ Run the self-avoiding random walk algorithm in a periodic simulation box.
 """
 function randomWalk(chainLengths, boxSize, bondLength, minDistance;
         targetAngle=(0, 180),
-        particles = nothing,
+        particles = Particle[],
         maxNumTries=50,
         kwargs...
     )
@@ -67,7 +67,7 @@ function randomWalk(chainLengths, boxSize, bondLength, minDistance;
 
             ignore(n) = !isempty(points) && n == points[end]
 
-            if !hasNeighbours(cellGrid, nextStep, ignore) && (isnothing(particles) || all(p -> !isInParticle(nextStep, boxSize, p), particles))
+            if !hasNeighbours(cellGrid, nextStep, ignore) && all(p -> !isInParticle(nextStep, boxSize, p), particles)
                 add!(cellGrid, nextStep)
 
                 push!(points, nextStep)
