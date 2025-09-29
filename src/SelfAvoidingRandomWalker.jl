@@ -1,6 +1,5 @@
 module SelfAvoidingRandomWalker
 
-using LinearAlgebra
 using StaticArrays
 using ProgressMeter
 using Distributions
@@ -10,6 +9,8 @@ using Pipe: @pipe
 
 const Vector3 = SVector{3, Float64}
 const Matrix3x3 = SMatrix{3, 3, Float64}
+
+function visualize_search_pattern end
 
 include("RandomWalker.jl")
 include("CellGrid.jl")
