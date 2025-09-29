@@ -22,7 +22,7 @@ function searchPattern(targetMin, targetMax, allowedMin = 0, allowedMax = 180)
     relArea = targetArea / totalArea
     
     ΔϕMax = min(allowedMin-targetMean, targetMean-allowedMax)
-    ΔϕFactor = totalArea/(sin(targetMin) + sin(targetMax))
+    ΔϕFactor = totalArea/2targetMeanSin
 
     remainingSweep(tryFactor) = targetMean > allowedMean ?
         acos(allowedMinCos + totalArea*tryFactor) :
@@ -38,7 +38,7 @@ function searchPattern(targetMin, targetMax, allowedMin = 0, allowedMax = 180)
             ϕ = remainingSweep(tryFactor)
         end
         
-        λ = 2*pi*rand()
+        λ = 2pi*rand()
 
         (sinλ, cosλ) = sincos(λ)
         (sinϕ, cosϕ) = sincos(ϕ)
