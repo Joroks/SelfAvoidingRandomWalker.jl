@@ -6,7 +6,6 @@ authors = ["Johannes Roksvaag"]
 [deps]
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
-Pipe = "b98c9c47-44ae-5843-9183-064241ee97a0"
 Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
 ProgressMeter = "92933f4c-e287-5a05-a399-4b506db050ca"
 StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
@@ -19,9 +18,7 @@ GLMakie = "e9467ef8-e4e7-5192-8a1a-b1aee30e663a"
 MakieExt = "GLMakie"
 
 [compat]
-GLMakie = "0.13.6"
-LinearAlgebra = "1.11.0"
-julia = "1.6.7"
+julia = "1.11"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
