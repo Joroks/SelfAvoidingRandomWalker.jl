@@ -10,7 +10,7 @@ boxSize = [
 
 minDistance = 0.9
 bondLength = 0.7
-targetAngle = (160, 160)
+targetAngle = (120, 120)
 
 numAtoms = 1_120_042
 averageLength = 1000
@@ -30,10 +30,14 @@ maxNumTries = 50
 chainLengths = randomLengths(numAtoms, averageLength, dispersity)
 printChainLengthStatistics(chainLengths)
 
-points = randomWalk(chainLengths, boxSize, bondLength, minDistance;
-    targetAngle,
-    particles,
-    maxNumTries)
-printAngleStatistics(points)
 
-saveAsLammps(boxSize, points, "output/test.data", "#")
+minDistance = 0.9
+
+generator = chain_generator(bondLength, targetAngle...)
+
+sarw = SARW(boxSize, minDistance, chainLengths, maxNumTries, generator, particles)
+run_SARW!(sarw)
+
+printAngleStatistics(sarw)
+
+saveAsLammps(sarw, "test.data", "#")

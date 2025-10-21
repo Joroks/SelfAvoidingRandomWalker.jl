@@ -48,12 +48,14 @@ function printChainLengthStatistics(chainLengths)
     println("\n")
 end
 
-function printAngleStatistics(chains)
+function printAngleStatistics(self::SARW)
+    chains = atom_positions(self)
+
     angles = sizehint!(Float64[0, 180], chains .|> length |> sum)
 
     for chain in chains
-        chainConVectors = chain[2:end] .- chain[1:end-1] .|> normalize
-        chainAngles = dot.(-chainConVectors[2:end], chainConVectors[1:end-1]) .|> acos .|> rad2deg
+        chainConVectors = normalize.(diff(chain))
+        chainAngles = (acosd ∘ dot).(-chainConVectors[2:end], chainConVectors[1:end-1])
 
         append!(angles, chainAngles)
     end

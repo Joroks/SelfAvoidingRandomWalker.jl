@@ -22,7 +22,10 @@ function SelfAvoidingRandomWalker.visualize_search_pattern(n = 10000)
     k = range(0,1,n)
     points = lift(allowed.interval, target.interval) do allowed, target
         pattern = SelfAvoidingRandomWalker.searchPattern(target..., allowed...)
-        stack(pattern(k)[:,1] for k in k)
+        map(1:n) do k
+            try_factor = (k-rand())/n
+            pattern(try_factor)[:,1]
+        end |> stack
     end
 
     GLMakie.onany(points, visible.interval; update=true) do points, visible
