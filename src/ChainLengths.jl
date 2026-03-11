@@ -1,7 +1,3 @@
-using Distributions
-using UnicodePlots
-using Printf
-
 """
     function randomLengths(numAtoms, averageLenght, dispersity)
 
@@ -13,6 +9,13 @@ Randomly generate a list of chain lenghts with a sum of exaxtly numAtoms.
  - `dispersity`: see https://en.wikipedia.org/wiki/Dispersity
 """
 function randomLengths(numAtoms, averageLenght, dispersity)
+    if dispersity == 1
+        div, rem = divrem(numAtoms, averageLenght)
+        lengths = fill(averageLenght, div)
+        rem != 0 && push!(lengths, rem)
+        return lengths
+    end
+
     shape = 1/(dispersity-1)
     scale = averageLenght*(dispersity-1)
     dist = Gamma(shape, scale)
@@ -28,7 +31,7 @@ function randomLengths(numAtoms, averageLenght, dispersity)
 
     lengths[end] -= atomCount - numAtoms
 
-    return lengths
+    return sort!(lengths; lt = >)
 end
 
 function printChainLengthStatistics(chainLengths)
@@ -45,12 +48,14 @@ function printChainLengthStatistics(chainLengths)
     println("\n")
 end
 
-function printAngleStatistics(chains)
+function printAngleStatistics(self::SARW)
+    chains = atom_positions(self)
+
     angles = sizehint!(Float64[0, 180], chains .|> length |> sum)
 
     for chain in chains
-        chainConVectors = chain[2:end] .- chain[1:end-1] .|> normalize
-        chainAngles = dot.(-chainConVectors[2:end], chainConVectors[1:end-1]) .|> acos .|> rad2deg
+        chainConVectors = normalize.(diff(chain))
+        chainAngles = (acosd ∘ dot).(-chainConVectors[2:end], chainConVectors[1:end-1])
 
         append!(angles, chainAngles)
     end

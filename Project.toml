@@ -1,20 +1,24 @@
 name = "SelfAvoidingRandomWalker"
 uuid = "a42a5f7b-f114-4f2d-b06a-fb70c26e4e43"
+version = "1.0.0"
 authors = ["Johannes Roksvaag"]
-version = "1.0.0-DEV"
 
 [deps]
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
-Pipe = "b98c9c47-44ae-5843-9183-064241ee97a0"
 Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
 ProgressMeter = "92933f4c-e287-5a05-a399-4b506db050ca"
-Revise = "295af30f-e4ad-537b-8983-00126c2a3abe"
 StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
 UnicodePlots = "b8865327-cd53-5732-bb35-84acbb429228"
 
+[weakdeps]
+GLMakie = "e9467ef8-e4e7-5192-8a1a-b1aee30e663a"
+
+[extensions]
+MakieExt = "GLMakie"
+
 [compat]
-julia = "1.6.7"
+julia = "1.11"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
