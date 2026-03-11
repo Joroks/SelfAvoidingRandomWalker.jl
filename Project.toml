@@ -1,6 +1,6 @@
 name = "SelfAvoidingRandomWalker"
 uuid = "a42a5f7b-f114-4f2d-b06a-fb70c26e4e43"
-version = "1.0.0-DEV"
+version = "1.0.0"
 authors = ["Johannes Roksvaag"]
 
 [deps]
