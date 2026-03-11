@@ -30,8 +30,9 @@ mutable struct SARW{CG}
     isdone::Bool
     highest_count::Int
     all_tries::Int
+    log::Memory{Int}
 
-    function SARW(box, dmin, chains, max_tries, chain_generator::CG, particles=Particle[]) where CG
+    function SARW(box, dmin, chains, max_tries, chain_generator::CG, particles=Particle[]; log=false) where CG
         self = new{CG}()
 
         self.box = Matrix3x3(box)
@@ -55,6 +56,10 @@ mutable struct SARW{CG}
         self.isdone = false
         self.highest_count = 0
         self.all_tries = 0
+
+        self.log = Memory{Int}(undef, log*natoms)
+        fill!(self.log, 0)
+
         return self
     end
 end
@@ -149,18 +154,24 @@ function check_atom_position!(self::SARW)
     increment!(self.cells[I])
 end
 
-function _run_SARW!(self::SARW)
+function _run_SARW!(self::SARW; max_total_tries=Inf)
     while !self.isdone
         continue_chain!(self)
         check_atom_position!(self)
 
         self.highest_count = max(self.highest_count, count(self.cells))
         self.all_tries += 1
+
+        if !isempty(self.log) && count(self.cells) != 0 && self.log[count(self.cells)] == 0
+            self.log[count(self.cells)] = self.all_tries
+        end
+
         self.isdone |= self.chain_counter > length(self.chains)
+        self.isdone |= self.all_tries >= max_total_tries
     end
 end
 
-function run_SARW!(self::SARW)
+function run_SARW!(self::SARW, max_total_tries=Inf)
     p = Progress(last(self.chains);
         desc = "Running SARW...",
         showspeed=true
