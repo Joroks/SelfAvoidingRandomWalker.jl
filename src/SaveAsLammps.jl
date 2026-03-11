@@ -2,29 +2,9 @@ using Printf
 using ProgressMeter
 
 """
-    saveAsLammps(boxSize, chains, filePath, headerTitle)
+    saveAsLammps(self::SARW, filePath, headerTitle)
 
 Save the result of the SARW algorithm to a lammps data file.
-
-There are certain limitations on `boxSize` in order to generate a valid lammps file. It has to have the following structure:
-```
-    xhi  xy   xz
-    0    yhi  yz
-    0    0    zhi
-```
-with
-```
-    xhi, yhi, zhi > 0
-
-    -xhi/2 ≤ xy ≤ xhi/2
-    -xhi/2 ≤ xz ≤ yhi/2
-    -xhi/2 ≤ yz ≤ yhi/2
-```
-
-for more information see: https://docs.lammps.org/Howto_triclinic.html
-
-Note that any box size can be transformed into the valid structure using lattice reduction and QR-decomposition while retaining eqivalent periodicity (although prossibly rotated).
-
 """
 function saveAsLammps(self::SARW, filePath, headerTitle)
     boxSize = self.box

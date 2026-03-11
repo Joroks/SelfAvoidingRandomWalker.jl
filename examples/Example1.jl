@@ -30,9 +30,6 @@ maxNumTries = 50
 chainLengths = randomLengths(numAtoms, averageLength, dispersity)
 printChainLengthStatistics(chainLengths)
 
-
-minDistance = 0.9
-
 generator = chain_generator(bondLength, targetAngle...)
 
 sarw = SARW(boxSize, minDistance, chainLengths, maxNumTries, generator, particles)
